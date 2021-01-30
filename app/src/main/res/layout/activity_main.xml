@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:text="Button" />
+            android:text="До" />
 
         <Button
             android:id="@+id/re"
@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:text="Button" />
+            android:text="Ре" />
 
         <Button
             android:id="@+id/mi"
@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:text="Button" />
+            android:text="Ми" />
 
         <Button
             android:id="@+id/fa"
@@ -45,7 +45,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:text="Button" />
+            android:text="Фа" />
 
         <Button
             android:id="@+id/sol"
@@ -53,7 +53,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:text="Button" />
+            android:text="Соль" />
 
         <Button
             android:id="@+id/la"
@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:text="Button" />
+            android:text="Ля" />
 
         <Button
             android:id="@+id/si"
@@ -69,7 +69,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:text="Button" />
+            android:text="Си" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
