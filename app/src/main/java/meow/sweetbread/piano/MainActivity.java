@@ -7,7 +7,6 @@ import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void createSoundPool() {
         AudioAttributes attributes = new AudioAttributes.Builder()
@@ -76,16 +76,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int loadSound(String fileName) {
-        Log.d("meow", "loadSound: load: " + fileName);
         AssetFileDescriptor afd;
         try {
             afd = mAssetManager.openFd(fileName);
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("meow", "loadSound: " + fileName);
             return -1;
         } catch (Exception e) {
-            Log.d("meow", "loadSound: " + fileName);
             return -1;
         }
         return mSoundPool.load(afd, 1);
