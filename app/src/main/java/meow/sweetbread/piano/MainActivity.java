@@ -1,111 +1,100 @@
 package meow.sweetbread.piano;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.TargetApi;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.media.MediaPlayer;
+import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-    MediaPlayer mPlayer;
-    
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    private SoundPool mSoundPool;
+    private AssetManager mAssetManager;
+    private int mStreamID;
+    private int s_do, s_re, s_mi, s_fa, s_sol, s_la, s_si;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("meow", "onCreate: meow!");
 
-        AssetManager myAssetManager = getApplicationContext().getAssets();
+        createSoundPool();
+        mAssetManager = getAssets();
 
-        try {
-            String[] Files = myAssetManager.list(""); // массив имён файлов
-            Log.d("meow", String.join(", ", Files));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        s_do = loadSound("_do.mp3");
+        s_re = loadSound("re.mp3");
+        s_mi = loadSound("mi.mp3");
+        s_fa = loadSound("fa.mp3");
+        s_sol = loadSound("sol.mp3");
+        s_la = loadSound("la.mp3");
+        s_si = loadSound("si.mp3");
     }
 
     public void onClick(View v) {
-        Log.d("meow", "onClick: meow!");
-        playSound(v.getId());
-    };
-
-    private void playSound(int sound) {
-        Log.d("meow", "playSound: " + String.valueOf(sound));
-        if (sound == R.id._do) {
-            mPlayer = MediaPlayer.create(this, R.raw._do);
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopPlay();
-                }
-            });
-        } else if (sound == R.id.re) {
-            mPlayer = MediaPlayer.create(this, R.raw.re);
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopPlay();
-                }
-            });
-        } else if (sound == R.id.mi) {
-            mPlayer = MediaPlayer.create(this, R.raw.mi);
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopPlay();
-                }
-            });
-        } else if (sound == R.id.fa) {
-            mPlayer = MediaPlayer.create(this, R.raw.fa);
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopPlay();
-                }
-            });
-        } else if (sound == R.id.sol) {
-            mPlayer = MediaPlayer.create(this, R.raw.sol);
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopPlay();
-                }
-            });
-        } else if (sound == R.id.la) {
-            mPlayer = MediaPlayer.create(this, R.raw.la);
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopPlay();
-                }
-            });
-        } else if (sound == R.id.si) {
-            mPlayer = MediaPlayer.create(this, R.raw.si);
-            mPlayer.setOnCompletionListener(mp -> stopPlay());
+        switch (v.getId()) {
+            case R.id._do:
+                playSound(s_do);
+                break;
+            case R.id.re:
+                playSound(s_re);
+                break;
+            case R.id.mi:
+                playSound(s_mi);
+                break;
+            case R.id.fa:
+                playSound(s_fa);
+                break;
+            case R.id.sol:
+                playSound(s_sol);
+                break;
+            case R.id.la:
+                playSound(s_la);
+                break;
+            case R.id.si:
+                playSound(s_si);
+                break;
         }
-
-        mPlayer.start();
     }
 
-    private void stopPlay(){
-        mPlayer.stop();
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void createSoundPool() {
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+        mSoundPool = new SoundPool.Builder()
+                .setAudioAttributes(attributes)
+                .setMaxStreams(7)
+                .build();
+    }
+
+    private int loadSound(String fileName) {
+        Log.d("meow", "loadSound: load: " + fileName);
+        AssetFileDescriptor afd = null;
         try {
-            mPlayer.prepare();
-            mPlayer.seekTo(0);
+            afd = mAssetManager.openFd(fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("meow", "loadSound: " + fileName);
+            return -1;
+        } catch (Exception e) {
+            Log.d("meow", "loadSound: " + fileName);
+            return -1;
         }
-        catch (Throwable t) {
-            Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
+        return mSoundPool.load(afd, 1);
+    }
+
+    private int playSound(int sound) {
+        if (sound > 0) {
+            mStreamID = mSoundPool.play(sound, 1, 1, 1, 0, 1);
         }
+        return mStreamID;
     }
 }
