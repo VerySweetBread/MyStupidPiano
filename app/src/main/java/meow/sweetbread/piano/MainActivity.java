@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int loadSound(String fileName) {
         Log.d("meow", "loadSound: load: " + fileName);
-        AssetFileDescriptor afd = null;
+        AssetFileDescriptor afd;
         try {
             afd = mAssetManager.openFd(fileName);
         } catch (IOException e) {
