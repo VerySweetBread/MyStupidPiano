@@ -16,9 +16,6 @@ import android.widget.Toast;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-    private AssetManager mAssetManager;
-    private SoundPool mSoundPool;
-    private int mStreamID;
     MediaPlayer mPlayer;
     
     @RequiresApi(api = Build.VERSION_CODES.O)
